@@ -24,8 +24,6 @@ func main() {
 	conn := db.MySqlConnect()
 	defer conn.Close()
 
-	db.SeedData(conn)
-
 	// Initialize the repository
 	userQuery := query.NewMySQLUserQuery(conn)
 
