@@ -8,8 +8,8 @@ import (
 	"github.com/rfashwall/go-microservice-workshop/pkg/db"
 	"github.com/rfashwall/go-microservice-workshop/pkg/middleware"
 	"github.com/rfashwall/go-microservice-workshop/pkg/utils"
-	"github.com/rfashwall/user-service/internal/handlers"
-	"github.com/rfashwall/user-service/internal/query"
+	"github.com/rfashwall/task-service/internal/handlers"
+	"github.com/rfashwall/task-service/internal/query"
 )
 
 func main() {
@@ -18,20 +18,20 @@ func main() {
 
 	app := fiber.New()
 	app.Use(logger.New())
-	app.Use(middleware.TracingMiddleware("user-query-service"))
+	app.Use(middleware.TracingMiddleware("task-query-service"))
 
 	// Connect to the database
 	conn := db.MySqlConnect()
 	defer conn.Close()
 
 	// Initialize the repository
-	userQuery := query.NewMySQLUserQuery(conn)
+	taskQuery := query.NewMySQLTaskQuery(conn)
 
 	// Initialize the handler
-	userHandler := handlers.NewUserQueryHandler(userQuery)
+	taskHandler := handlers.NewTaskQueryHandler(taskQuery)
 
 	// Set up routes
-	userHandler.SetupRoutes(app)
+	taskHandler.SetupRoutes(app)
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":3003"))
 }
